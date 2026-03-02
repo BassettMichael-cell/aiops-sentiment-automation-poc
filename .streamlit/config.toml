@@ -1,12 +1,12 @@
 [server]
-# Required for Render.com free tier (disables features that need extra setup)
 enableCORS = false
 enableXsrfProtection = false
+headless = true
+port = 8501
 
-# Makes the app use a clean dark theme (looks professional)
 [theme]
-primaryColor = "#4F8BF9"          # nice blue accent
-backgroundColor = "#0E1117"       # very dark background
-secondaryBackgroundColor = "#262730"  # slightly lighter panels
-textColor = "#FAFAFA"             # light text
+primaryColor = "#4F8BF9"
+backgroundColor = "#0E1117"
+secondaryBackgroundColor = "#262730"
+textColor = "#FAFAFA"
 font = "sans serif"

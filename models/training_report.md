@@ -1,4 +1,4 @@
-# Training Report - 2026-03-02 18:43:29
+# Training Report - 2026-03-02 18:55:57
 
 **Dataset**: IMDb Sentiment (1000 samples from `imdb`, shuffled)  
 **Train/Test split**: 80/20 (stratified)  

@@ -2,15 +2,12 @@ import os
 import joblib
 import streamlit as st
 
-# ---------- Path resolution (works in root OR /src) ----------
+# ---------- Path resolution (works in repo root OR /src) ----------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Try common locations:
-# 1) models/ next to app file
-# 2) models/ one level above (if app is in /src)
 CANDIDATE_MODEL_PATHS = [
-    os.path.join(BASE_DIR, "models", "sentiment_model.joblib"),
-    os.path.join(BASE_DIR, "..", "models", "sentiment_model.joblib"),
+    os.path.join(BASE_DIR, "models", "sentiment_model.joblib"),       # app.py in repo root
+    os.path.join(BASE_DIR, "..", "models", "sentiment_model.joblib"), # app.py in /src
 ]
 
 CANDIDATE_REPORT_PATHS = [
@@ -22,8 +19,7 @@ def first_existing_path(paths: list[str]) -> str:
     for p in paths:
         if os.path.exists(p):
             return p
-    # default to first candidate for nicer error messages
-    return paths[0]
+    return paths[0]  # for nicer error messages
 
 MODEL_PATH = first_existing_path(CANDIDATE_MODEL_PATHS)
 REPORT_PATH = first_existing_path(CANDIDATE_REPORT_PATHS)
@@ -38,6 +34,20 @@ def load_model_cached(path: str):
     """Load model + vectorizer once per app session."""
     return joblib.load(path)  # returns (vectorizer, model)
 
+def show_model_info_sidebar(model_path: str, report_path: str):
+    st.sidebar.markdown("### Model Info")
+    st.sidebar.write("Type: Logistic Regression + TF-IDF")
+    st.sidebar.write("Source: GitHub Actions trained model")
+
+    if os.path.exists(model_path):
+        st.sidebar.write("Model file:", os.path.basename(model_path))
+        st.sidebar.write("Size:", f"{os.path.getsize(model_path):,} bytes")
+
+    if file_ready(report_path):
+        st.sidebar.markdown("### Latest Training Report")
+        with open(report_path, "r", encoding="utf-8") as f:
+            st.sidebar.markdown(f.read())
+
 def render_model_not_ready():
     st.error(
         "Model file is missing or empty.\n\n"
@@ -45,7 +55,7 @@ def render_model_not_ready():
         "and committed back into the repository."
     )
 
-    st.markdown("### Debug info (for troubleshooting)")
+    st.markdown("### Debug info")
     st.code(
         "\n".join([
             f"cwd: {os.getcwd()}",
@@ -58,7 +68,6 @@ def render_model_not_ready():
         ])
     )
 
-    # Show training report if it exists
     if file_ready(REPORT_PATH):
         st.markdown("### Latest training report")
         with open(REPORT_PATH, "r", encoding="utf-8") as f:
@@ -70,7 +79,6 @@ def render_model_not_ready():
         "- Confirm the repo contains a **non-empty** `models/sentiment_model.joblib`\n"
         "- Streamlit redeploys automatically after the commit\n"
     )
-
     st.stop()
 
 # ---------- UI ----------
@@ -78,12 +86,15 @@ st.set_page_config(page_title="Live Sentiment Analysis Demo", layout="centered")
 st.title("Live Sentiment Analysis Demo")
 st.markdown(
     """
-This app serves a sentiment model trained in a GitHub Actions pipeline.
+This app serves a sentiment model trained in a GitHub Actions pipeline.  
 Paste any text (movie review, tweet, product feedback, etc.) and get an instant prediction.
 """
 )
 
-# ---------- Guard: model must exist AND be non-empty ----------
+# Sidebar metadata (helpful for portfolio reviewers)
+show_model_info_sidebar(MODEL_PATH, REPORT_PATH)
+
+# ---------- Guard ----------
 if not file_ready(MODEL_PATH):
     render_model_not_ready()
 

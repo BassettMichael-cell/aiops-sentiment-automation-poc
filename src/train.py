@@ -73,4 +73,12 @@ report = f"""# Training Report - {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
 **Train/Test split**: 80/20  
 **Accuracy**: {acc:.4f}
 
-### Classification Report
+### Classification Report 
+Model saved as `sentiment_model.joblib`
+"""
+
+with open("models/training_report.md", "w") as f:
+    f.write(report)
+
+print("Report saved")
+print("Done!")

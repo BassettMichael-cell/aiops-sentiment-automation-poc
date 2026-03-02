@@ -15,12 +15,12 @@ Try the model right now!
 ### Workflow Diagram
 ```mermaid
 flowchart TD
-    A[GitHub Push or Manual Trigger] --> B[Checkout Code]
-    B --> C[Setup Python + Install deps]
-    C --> D[Run train.py]
-    D --> E[Load IMDb dataset (1k samples)]
-    E --> F[TF-IDF Vectorization]
-    F --> G[Train LogisticRegression]
-    G --> H[Evaluate & Generate Report]
-    H --> I[Save Model + Report]
-    I --> J[Upload Artifacts]
+    A["GitHub Push or Manual Trigger"] --> B["Checkout Code"]
+    B --> C["Setup Python + Install deps"]
+    C --> D["Run train.py"]
+    D --> E["Load IMDb dataset (1k samples)"]
+    E --> F["TF-IDF Vectorization"]
+    F --> G["Train LogisticRegression"]
+    G --> H["Evaluate & Generate Report"]
+    H --> I["Save Model + Report"]
+    I --> J["Upload Artifacts"]

@@ -57,7 +57,10 @@ acc = accuracy_score(y_test, y_pred)
 print(f"✅ Accuracy: {acc:.4f}")
 
 print("\nClassification Report:")
-print(classification_report(y_test, y_pred, target_names=["Negative", "Positive"]))
+report_text = classification_report(
+    y_test, y_pred, target_names=["Negative", "Positive"]
+)
+print(report_text)
 
 # Save the vectorizer + model together
 joblib.dump((vectorizer, model), "models/sentiment_model.joblib")

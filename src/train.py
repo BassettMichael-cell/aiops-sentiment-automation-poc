@@ -60,3 +60,13 @@ report = f"""# Training Report - {datetime.now().strftime("%Y-%m-%d %H:%M")}
 **Accuracy**: {acc:.4f}
 
 ### Classification Report
+{classification_report(y_test, y_pred)}
+
+Model & vectorizer saved as `sentiment_model.joblib`
+"""
+
+with open("models/training_report.md", "w") as f:
+    f.write(report)
+
+print("📄 Report saved to models/training_report.md")
+print("🎉 Pipeline completed successfully!")

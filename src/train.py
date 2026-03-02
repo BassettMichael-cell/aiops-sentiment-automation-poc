@@ -55,7 +55,7 @@ print("💾 Model saved to models/sentiment_model.joblib")
 # Generate nice report
 report = f"""# Training Report - {datetime.now().strftime("%Y-%m-%d %H:%M")}
 
-**Dataset**: IMDb Sentiment (1,000 samples)  
+**Dataset**: stanfordnlp/imdb", split="train[:1000]
 **Train/Test split**: 80/20  
 **Accuracy**: {acc:.4f}
 
